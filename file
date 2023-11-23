@@ -1,0 +1,47 @@
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+
+void open_file(std::string file_name) {
+    std::ifstream file(file_name);
+    if (file.is_open()) {
+        std::cout << "File Opened Successfully!" << std::endl;
+        file.seekg(0, std::ios::end);
+        int length = file.tellg();
+        file.seekg(0, std::ios::beg);
+
+        std::cout << "Length of File: " << length << " bytes" << std::endl;
+
+        char buffer[length];
+        file.read(buffer, length);
+
+        std::cout << "\nHexadecimal Form:" << std::endl;
+        for (int i = 0; i < length; i++) {
+            std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)buffer[i] << " ";
+        }
+
+        std::cout << "\n\nASCII Form:" << std::endl;
+        for (int i = 0; i < length; i++) {
+            std::cout << std::dec << (int)buffer[i] << " ";
+        }
+
+        std::cout << "\n\nBinary Form:" << std::endl;
+        for (int i = 0; i < length; i++) {
+            std::cout << std::bitset<8>(buffer[i]) << " ";
+        }
+
+        file.close();
+    } else {
+        std::cout << "Unable to Open File!" << std::endl;
+    }
+}
+
+int main() {
+    std::string file_name;
+    std::cout << "Enter the File Name: ";
+    std::cin >> file_name;
+
+    open_file(file_name);
+
+    return 0;
+}
